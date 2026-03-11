@@ -1,50 +1,35 @@
-# 🩺 MedPredict — AI Disease Prediction System
+# MedPredict - Disease Prediction System
 
-A machine learning based web application that predicts the risk of 4 diseases using 3 ML models simultaneously. Built as a mini project for academic submission.
+This is my mini project. I made a web app that predicts disease risk using machine learning. The user enters some health details and the app tells them if they are at high risk or low risk for 4 diseases.
 
----
-
-## 📋 Table of Contents
-
-- [About the Project](#about-the-project)
-- [Diseases Covered](#diseases-covered)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Setup Instructions](#setup-instructions)
-- [How to Run](#how-to-run)
-- [How It Works](#how-it-works)
-- [ML Models Used](#ml-models-used)
-- [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
-- [Disclaimer](#disclaimer)
+I used Python Flask for backend and React for frontend. Three ML models run at the same time and the best one is selected automatically.
 
 ---
 
-## 📖 About the Project
+## What This Project Does
 
-MedPredict is a full stack web application that allows users to enter basic health parameters and get an instant AI-powered disease risk prediction. The system runs 3 machine learning models simultaneously and selects the best result automatically. Results are displayed with visual charts, plain english explanations and personalized health recommendations.
+The user opens the website and selects a disease. Then they fill a simple form with basic health details like age, blood pressure, cholesterol etc. The system runs 3 machine learning models on the input and shows the result with charts and explanation.
 
----
-
-## 🦠 Diseases Covered
-
-| Disease | Dataset | Rows | Models |
-|---|---|---|---|
-| ❤️ Heart Disease | UCI Cleveland Heart Disease | 303 | DT, RF, LR |
-| 🧠 Brain Stroke | McKinsey Stroke Dataset | 5110 | DT, RF, LR |
-| 🫘 Kidney Disease | UCI CKD Dataset | 400 | DT, RF, LR |
-| 🩸 Diabetes | Pima Indians Diabetes | 768 | DT, RF, LR |
+The user never sees which model ran or any ML complexity. They just see High Risk or Low Risk with a plain english reason.
 
 ---
 
-## 🛠 Tech Stack
+## Diseases Covered
+
+- Heart Disease
+- Brain Stroke
+- Kidney Disease
+- Diabetes
+
+---
+
+## Tech Stack
 
 **Frontend**
-- HTML5, CSS3
-- React 18 (via CDN)
-- Babel Standalone (JSX compiler)
-- Chart.js (radar and bar charts)
-- Google Fonts (Playfair Display, DM Sans)
+- HTML, CSS
+- React 18 using CDN (no npm)
+- Babel Standalone for JSX compilation
+- Chart.js for radar and bar charts
 
 **Backend**
 - Python 3
@@ -56,10 +41,12 @@ MedPredict is a full stack web application that allows users to enter basic heal
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 NEW MINI/
+│
+├── venv/                      # virtual environment (not pushed to git)
 │
 ├── backend/
 │   ├── data/
@@ -67,16 +54,16 @@ NEW MINI/
 │   │   ├── brain.csv
 │   │   ├── kidney_disease.csv
 │   │   └── diabetes.csv
-│   ├── preprocessor.py    # data cleaning and encoding
-│   ├── train.py           # trains all 12 models at startup
-│   ├── predictor.py       # runs models and picks best result
-│   ├── validator.py       # validates user inputs
-│   └── app.py             # Flask API entry point
+│   ├── preprocessor.py        # cleans and encodes data
+│   ├── train.py               # trains all 12 models
+│   ├── predictor.py           # picks best model and returns result
+│   ├── validator.py           # checks user inputs
+│   └── app.py                 # main flask file
 │
 ├── frontend/
-│   ├── index.html         # entry point
+│   ├── index.html
 │   └── src/
-│       ├── bundle.jsx     # all React components bundled
+│       ├── bundle.jsx         # all react components in one file
 │       └── styles/
 │           ├── global.css
 │           ├── dashboard.css
@@ -88,44 +75,45 @@ NEW MINI/
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup
 
-### Step 1 — Clone the Repository
+### Step 1 - Clone the repo
 
 ```bash
 git clone https://github.com/yourusername/new-mini.git
 cd new-mini
 ```
 
-### Step 2 — Create Virtual Environment
+### Step 2 - Create virtual environment
+
+I used venv to keep all python packages separate for this project so they dont mix with other projects on my system.
 
 ```bash
-# Create venv inside project folder
 python3 -m venv venv
 ```
 
-### Step 3 — Activate Virtual Environment
+### Step 3 - Activate virtual environment
 
 ```bash
-# On Mac / Linux
+# Mac or Linux
 source venv/bin/activate
 
-# On Windows
+# Windows
 venv\Scripts\activate
 ```
 
-You should see `(venv)` in your terminal after activation.
+After running this you will see (venv) at the start of your terminal. That means it is activated.
 
-### Step 4 — Install Dependencies
+### Step 4 - Install required packages
 
 ```bash
 cd backend
 pip install flask flask-cors scikit-learn pandas numpy
 ```
 
-### Step 5 — Add Datasets
+### Step 5 - Download datasets
 
-Download the 4 CSV files from Kaggle and place them inside `backend/data/`
+I got all 4 datasets from Kaggle. Download them and place inside backend/data/ folder.
 
 | File | Kaggle Link |
 |---|---|
@@ -134,92 +122,85 @@ Download the 4 CSV files from Kaggle and place them inside `backend/data/`
 | kidney_disease.csv | kaggle.com/datasets/mansoordaku/ckdisease |
 | diabetes.csv | kaggle.com/datasets/uciml/pima-indians-diabetes-database |
 
-Rename files as shown above after downloading.
+After downloading rename each file as shown in the table above.
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
-### Terminal 1 — Start Backend
+**Terminal 1 - Run the backend**
 
 ```bash
 cd backend
-source ../venv/bin/activate   # Mac/Linux
+source ../venv/bin/activate
 python3 app.py
 ```
 
-Expected output:
-```
-🚀 Starting NEW MINI Backend...
-Training Heart models...
-Heart → DT: 63.33%  RF: 65.0%  LR: 58.33%
-Training Brain models...
-Brain → DT: 92.07%  RF: 93.84%  LR: 75.05%
-Training Kidney models...
-Kidney → DT: 88.75%  RF: 91.25%  LR: 93.75%
-Training Diabetes models...
-Diabetes → DT: 75.32%  RF: 75.32%  LR: 69.48%
-✅ Backend Ready
+**Terminal 2 - Run the frontend**
 
-* Running on http://127.0.0.1:5001
-```
-
-### Terminal 2 — Start Frontend
+I used VS Code Live Server extension to run the frontend.
 
 ```
 1. Open VS Code
 2. Install Live Server extension by Ritwick Dey
 3. Right click on frontend/index.html
-4. Click Open with Live Server
+4. Select Open with Live Server
 5. Browser opens at http://127.0.0.1:5500
 ```
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 ```
-1. User selects a disease on the dashboard
-2. User fills in 8 health parameters in the form
-3. Frontend sends inputs to Flask API via POST request
-4. Flask preprocesses inputs using the same scaler from training
-5. All 3 ML models run on the user inputs simultaneously
-6. Best model is selected based on accuracy and F1 score
-7. Result returned with prediction, confidence and explanation
-8. Frontend displays risk banner, charts and recommendations
+1. User selects disease on dashboard
+2. User fills health parameters in form
+3. Frontend sends data to Flask API
+4. Backend preprocesses inputs using saved scaler
+5. All 3 models run on the input
+6. Best model is picked by accuracy and F1 score
+7. Result sent back as JSON
+8. Frontend shows risk level, charts and explanation
 ```
 
 ---
 
-## 🤖 ML Models Used
+## ML Models Used
 
-| Model | Description |
-|---|---|
-| Decision Tree | Rule based branching model. Learns if/else conditions from training data |
-| Random Forest | Ensemble of 100 decision trees. Majority vote gives final prediction |
-| Logistic Regression | Statistical model that calculates probability of disease |
+I used 3 machine learning models for each disease. All 3 run every time and the best one is selected automatically. The user never sees which model was selected.
 
-**Best Model Selection Logic:**
-1. Compare accuracy of all 3 models
+**Decision Tree**
+Learns a series of if/else rules from training data. Easy to understand and explain.
+
+**Random Forest**
+Builds 100 decision trees and takes majority vote. Generally more accurate than a single tree.
+
+**Logistic Regression**
+Calculates the probability of disease using a mathematical equation. Works well for medical data.
+
+**Best Model Selection**
+1. Compare accuracy of all 3
 2. Highest accuracy wins
-3. If tied → F1 score used as tiebreaker
-4. If still tied → Random Forest selected as default
+3. If tied then F1 score is used as tiebreaker
+4. If still tied then Random Forest is default
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | /health | Check if backend is running |
-| POST | /predict/heart | Heart disease prediction |
-| POST | /predict/brain | Brain stroke prediction |
-| POST | /predict/kidney | Kidney disease prediction |
-| POST | /predict/diabetes | Diabetes prediction |
+| POST | /predict/heart | Heart disease |
+| POST | /predict/brain | Brain stroke |
+| POST | /predict/kidney | Kidney disease |
+| POST | /predict/diabetes | Diabetes |
 
-**Sample Request:**
+**Example request for heart:**
+
 ```json
-POST /predict/heart
+POST http://127.0.0.1:5001/predict/heart
+
 {
   "age": 55,
   "sex": 1,
@@ -232,7 +213,8 @@ POST /predict/heart
 }
 ```
 
-**Sample Response:**
+**Example response:**
+
 ```json
 {
   "disease": "heart",
@@ -250,31 +232,38 @@ POST /predict/heart
 
 ---
 
-## 📊 Model Accuracy Results
+## Model Results
 
-| Disease | Decision Tree | Random Forest | Logistic Regression | Best |
+| Disease | Decision Tree | Random Forest | Logistic Regression | Winner |
 |---|---|---|---|---|
-| ❤️ Heart | 63.33% | 65.00% | 58.33% | Random Forest |
-| 🧠 Brain | 92.07% | 93.84% | 75.05% | Random Forest |
-| 🫘 Kidney | 88.75% | 91.25% | 93.75% | Logistic Regression |
-| 🩸 Diabetes | 75.32% | 75.32% | 69.48% | Random Forest |
+| Heart | 63.33% | 65.00% | 58.33% | Random Forest |
+| Brain | 92.07% | 93.84% | 75.05% | Random Forest |
+| Kidney | 88.75% | 91.25% | 93.75% | Logistic Regression |
+| Diabetes | 75.32% | 75.32% | 69.48% | Random Forest |
 
-> Heart disease accuracy is lower due to the small dataset size of only 303 rows. A larger dataset would improve accuracy significantly.
-
----
-
-## ⚠️ Disclaimer
-
-This application is built for educational and academic purposes only. The predictions generated by this system are not medical diagnoses. Always consult a qualified healthcare professional for proper medical evaluation and treatment.
+Heart disease accuracy is on the lower side because the dataset only has 303 rows. ML models need more data to learn better patterns. For a mini project this is acceptable and can be mentioned in viva.
 
 ---
 
-## 👨‍💻 Author
+## Why bundle.jsx Instead of Separate Files
 
-Built as a Mini Project for academic submission.
+I initially wrote all React components in separate JSX files. But when loading multiple JSX files via CDN script tags the browser loads them all at the same time as parallel requests. This causes a race condition where App.jsx tries to use components that are not loaded yet resulting in a blank page.
+
+To fix this I combined all JSX into one single bundle.jsx file in the correct order. This way everything loads top to bottom with no timing issues.
+
+In production this would be handled by a build tool like Vite or Webpack. Since we are using plain CDN without any build tools we manually bundled the files.
 
 ---
 
-## 📄 License
+## Why Babel is Used
 
-This project is for educational use only.
+Browsers cannot understand JSX syntax directly. Babel is a JavaScript compiler that converts JSX into plain JavaScript that the browser can run.
+
+We used Babel Standalone which is a browser version of Babel that compiles JSX at runtime directly in the browser. No build step or npm needed.
+
+---
+
+
+This project is made for academic and educational purposes only. The predictions shown are not real medical diagnoses. Please consult a qualified doctor for actual medical advice.
+
+---
